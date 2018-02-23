@@ -38,6 +38,12 @@ func (s *CpuacctGroup) Apply(d *cgroupData) error {
 }
 
 func (s *CpuacctGroup) Set(path string, cgroup *configs.Cgroup) error {
+	if cgroup.Resources.ScheLatSwitch != 0 {
+		if err := writeFileIfExist(path, "cpuacct.sched_lat_histgram_enable", strconv.FormatInt(cgroup.Resources.ScheLatSwitch, 10)); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
